@@ -2,6 +2,8 @@
 
 Quick hardware test for a Wemos D1 mini (ESP8266), one HX711, and two matched 20 kg full-bridge load cells wired in parallel to channel A. The D1 mini hosts both the API and graph. No cloud, backend installation, home Wi-Fi credentials, or external chart libraries.
 
+For the two-tank Home Assistant setup, see [ESPHome wiring and setup](esphome/README.md), the [wiring diagram](docs/two-channel-wiring.svg), and the [ESPHome configuration](esphome/humidifier-scale.yaml). The Arduino sketch below is the original one-channel bench test.
+
 ## Use it
 
 ### USB graph on your laptop

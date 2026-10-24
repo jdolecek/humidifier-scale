@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800" role="img" aria-labelledby="title description">
+  <title id="title">Two-tank humidifier scale wiring</title>
+  <desc id="description">One Wemos D1 mini connects to two HX711 modules. Left DOUT goes to D5 GPIO14 and left clock to D6 GPIO12. Right DOUT goes to D7 GPIO13 and right clock to D1 GPIO5. Both modules share 3.3 volt power and ground. Each module connects to its own pair of parallel load cells on channel A.</desc>
+  <defs>
+    <style>
+      text{font-family:Arial,Helvetica,sans-serif;fill:#1c3028}.title{font-size:28px;font-weight:700}.sub{font-size:16px;fill:#53675c}.head{font-size:21px;font-weight:700}.label{font-size:17px}.small{font-size:14px;fill:#53675c}.mono{font-family:Menlo,Consolas,monospace;font-size:15px}.board{fill:#fff;stroke:#9fb3a6;stroke-width:2}.wire{fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}.power{stroke:#c73a41}.ground{stroke:#59636e}.data{stroke:#238250}.clock{stroke:#2466c2}.analog{stroke:#9d6b25;stroke-dasharray:7 5}
+    </style>
+  </defs>
+  <rect width="1200" height="800" fill="#f4f7f2"/>
+  <text x="40" y="49" class="title">Humidifier scale · two independent tanks</text>
+  <text x="40" y="80" class="sub">One D1 mini · two HX711s · two parallel 20 kg load cells per tank</text>
+  <rect x="40" y="125" width="300" height="535" rx="15" class="board"/>
+  <text x="65" y="161" class="head">Wemos D1 mini</text>
+  <text x="65" y="186" class="small">ESP8266 · USB powered</text>
+  <text x="65" y="235" class="label">3V3</text>
+  <text x="65" y="275" class="label">GND</text>
+  <text x="65" y="338" class="small">LEFT TANK</text>
+  <text x="65" y="373" class="label">D5 / GPIO14</text>
+  <text x="65" y="413" class="label">D6 / GPIO12</text>
+  <text x="65" y="486" class="small">RIGHT TANK</text>
+  <text x="65" y="521" class="label">D7 / GPIO13</text>
+  <text x="65" y="561" class="label">D1 / GPIO5</text>
+  <text x="65" y="620" class="small">Pins shown by function, not position.</text>
+
+  <rect x="610" y="125" width="250" height="240" rx="15" class="board"/>
+  <text x="635" y="162" class="head">Left HX711</text>
+  <text x="635" y="202" class="label">VCC</text>
+  <text x="635" y="242" class="label">GND</text>
+  <text x="635" y="282" class="label">DT / DOUT</text>
+  <text x="635" y="322" class="label">SCK / CLK</text>
+  <text x="785" y="348" class="small">A / 128</text>
+
+  <rect x="610" y="425" width="250" height="240" rx="15" class="board"/>
+  <text x="635" y="462" class="head">Right HX711</text>
+  <text x="635" y="502" class="label">VCC</text>
+  <text x="635" y="542" class="label">GND</text>
+  <text x="635" y="582" class="label">DT / DOUT</text>
+  <text x="635" y="622" class="label">SCK / CLK</text>
+  <text x="785" y="648" class="small">A / 128</text>
+
+  <path d="M340 230 H430 M430 196 V496 M430 196 H610 M430 496 H610" class="wire power"/>
+  <circle cx="430" cy="230" r="5" fill="#c73a41"/>
+  <path d="M340 270 H460 M460 236 V536 M460 236 H610 M460 536 H610" class="wire ground"/>
+  <circle cx="460" cy="270" r="5" fill="#59636e"/>
+  <path d="M340 368 H520 V276 H610" class="wire data"/>
+  <path d="M340 408 H550 V316 H610" class="wire clock"/>
+  <path d="M340 516 H520 V576 H610" class="wire data"/>
+  <path d="M340 556 H550 V616 H610" class="wire clock"/>
+
+  <rect x="940" y="155" width="225" height="180" rx="12" class="board"/>
+  <text x="960" y="186" class="head">Left cell pair</text>
+  <text x="960" y="214" class="small">Both cells in parallel</text>
+  <text x="960" y="246" class="mono">E+  E−  A+  A−</text>
+  <text x="960" y="275" class="small">Match electrical functions.</text>
+  <text x="960" y="300" class="small">Left tank supports only.</text>
+  <path d="M860 245 H940" class="wire analog"/>
+  <text x="872" y="231" class="small">4 wires</text>
+
+  <rect x="940" y="455" width="225" height="180" rx="12" class="board"/>
+  <text x="960" y="486" class="head">Right cell pair</text>
+  <text x="960" y="514" class="small">Both cells in parallel</text>
+  <text x="960" y="546" class="mono">E+  E−  A+  A−</text>
+  <text x="960" y="575" class="small">Match electrical functions.</text>
+  <text x="960" y="600" class="small">Right tank supports only.</text>
+  <path d="M860 545 H940" class="wire analog"/>
+  <text x="872" y="531" class="small">4 wires</text>
+
+  <text x="40" y="712" class="label">Separate data and clock for each module. Shared 3.3 V supply and ground.</text>
+  <text x="40" y="741" class="small">Dots mark joined wires; crossings without a dot are not connections. B+/B− are unused.</text>
+  <text x="40" y="768" class="small">Connect by printed label: breakout pin order and load-cell wire colors vary. Disconnect power before rewiring.</text>
+</svg>

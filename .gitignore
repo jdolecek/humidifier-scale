@@ -6,3 +6,6 @@ build/
 *.map
 __pycache__/
 .venv/
+.venv-esphome/
+.esphome/
+esphome/secrets.yaml
