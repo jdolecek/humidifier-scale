@@ -1,8 +1,10 @@
 # Humidifier scale bench
 
-Quick hardware test for a Wemos D1 mini (ESP8266), one HX711, and two matched 20 kg full-bridge load cells wired in parallel to channel A. The D1 mini hosts both the API and graph. No cloud, backend installation, home Wi-Fi credentials, or external chart libraries.
+Two-channel humidifier scale using a Wemos D1 mini V4.0.0 (ESP8266), two HX711s, and two matched 20 kg full-bridge load cells in parallel per tank. ESPHome exposes both tank readings to Home Assistant. Calibration is pending installation of the tanks and measurements with known added weights.
 
-For the two-tank Home Assistant setup, see [ESPHome wiring and setup](esphome/README.md), the [wiring diagram](docs/two-channel-wiring.svg), and the [ESPHome configuration](esphome/humidifier-scale.yaml). The Arduino sketch below is the original one-channel bench test.
+See [ESPHome wiring and setup](esphome/README.md), the [wiring diagram](docs/two-channel-wiring.svg), the [ESPHome configuration](esphome/humidifier-scale.yaml), and the [Home Assistant dashboard](homeassistant/dashboard.yaml). Both HX711 channels have been verified live with ESPHome 2026.9.1 and Home Assistant.
+
+The Arduino sketch and USB graph below are the original one-channel bench test. They require the Arduino firmware; ESPHome uses its own logging protocol and Home Assistant graphs.
 
 ## Use it
 

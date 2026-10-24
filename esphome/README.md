@@ -47,6 +47,8 @@ Leave B+/B− unused. Keep the left and right analog bridge wiring separate. Wir
 
 This config publishes raw counts once per second through ESPHome's native API. It does not yet claim kg, liters, or fill percentage. No MQTT broker is needed.
 
+The two-channel setup has been flashed and verified with ESPHome 2026.9.1: both HX711s produce readings, and both sensors are available in Home Assistant. A [dashboard configuration](../homeassistant/dashboard.yaml) provides live values and a separate one-hour history graph for each channel. If recreating the dashboard, use a new empty dashboard's raw configuration editor and paste that YAML; confirm the entity IDs match your installation.
+
 ## Calibrate each tank next
 
 For each tank, leave its platform and empty tank installed. Record a stable raw reading with the tank empty, then add a known water mass and record another stable reading. Use the mass **actually added**; a kitchen scale is useful. Repeat for the other tank. The direction of the count change may be positive or negative.

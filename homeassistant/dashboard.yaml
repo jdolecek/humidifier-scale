@@ -1,0 +1,36 @@
+title: Humidifier Scale
+views:
+  - title: Tanks
+    path: tanks
+    icon: mdi:scale
+    cards:
+      - type: markdown
+        content: |
+          ## Humidifier tank scales
+          Both channels are live. Values are **raw ADC counts**, not weight yet.
+
+          **Next:** install the empty tanks on their supports, then calibrate
+          each channel with a known added weight.
+
+      - type: entities
+        title: Live readings
+        show_header_toggle: false
+        entities:
+          - entity: sensor.humidifier_scale_left_tank_raw
+            name: Left tank · raw counts
+          - entity: sensor.humidifier_scale_right_tank_raw
+            name: Right tank · raw counts
+
+      - type: history-graph
+        title: Left tank · raw signal
+        hours_to_show: 1
+        entities:
+          - entity: sensor.humidifier_scale_left_tank_raw
+            name: Left tank
+
+      - type: history-graph
+        title: Right tank · raw signal
+        hours_to_show: 1
+        entities:
+          - entity: sensor.humidifier_scale_right_tank_raw
+            name: Right tank
