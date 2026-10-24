@@ -4,6 +4,8 @@ Each tank has its own independent supports: two matched 20 kg load cells wired i
 
 ![Two-channel wiring diagram](../docs/two-channel-wiring.svg)
 
+The diagram includes the **D1 mini V4.0.0 physical header pinout**, viewed from the component side with the antenna at the top and USB-C connector at the bottom. The six pins used by this scale are highlighted. Pin order was checked against the [official Wemos V4.0.0 pinout](https://www.wemos.cc/en/latest/_static/boards/d1_mini_v4.0.0_5_16x9.png).
+
 ## Connect the D1 mini
 
 Disconnect power before changing wiring. Connect by printed pin **label**, since HX711 breakout pin order varies.

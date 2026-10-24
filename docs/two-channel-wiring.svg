@@ -1,16 +1,16 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800" role="img" aria-labelledby="title description">
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1460" viewBox="0 0 1200 1460" role="img" aria-labelledby="title description">
   <title id="title">Two-tank humidifier scale wiring</title>
-  <desc id="description">One Wemos D1 mini connects to two HX711 modules. Left DOUT goes to D5 GPIO14 and left clock to D6 GPIO12. Right DOUT goes to D7 GPIO13 and right clock to D1 GPIO5. Both modules share 3.3 volt power and ground. Each module connects to its own pair of parallel load cells on channel A.</desc>
+  <desc id="description">One Wemos D1 mini V4.0.0 connects to two HX711 modules. Left DOUT goes to D5 GPIO14 and left clock to D6 GPIO12. Right DOUT goes to D7 GPIO13 and right clock to D1 GPIO5. Both modules share 3.3 volt power and ground. Each module connects to its own pair of parallel load cells on channel A. Below the functional wiring diagram is the physical 16-pin header layout, viewed from the component side with antenna at the top and USB-C at the bottom.</desc>
   <defs>
     <style>
       text{font-family:Arial,Helvetica,sans-serif;fill:#1c3028}.title{font-size:28px;font-weight:700}.sub{font-size:16px;fill:#53675c}.head{font-size:21px;font-weight:700}.label{font-size:17px}.small{font-size:14px;fill:#53675c}.mono{font-family:Menlo,Consolas,monospace;font-size:15px}.board{fill:#fff;stroke:#9fb3a6;stroke-width:2}.wire{fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}.power{stroke:#c73a41}.ground{stroke:#59636e}.data{stroke:#238250}.clock{stroke:#2466c2}.analog{stroke:#9d6b25;stroke-dasharray:7 5}
     </style>
   </defs>
-  <rect width="1200" height="800" fill="#f4f7f2"/>
+  <rect width="1200" height="1460" fill="#f4f7f2"/>
   <text x="40" y="49" class="title">Humidifier scale · two independent tanks</text>
   <text x="40" y="80" class="sub">One D1 mini · two HX711s · two parallel 20 kg load cells per tank</text>
   <rect x="40" y="125" width="300" height="535" rx="15" class="board"/>
-  <text x="65" y="161" class="head">Wemos D1 mini</text>
+  <text x="65" y="161" class="head">D1 mini V4.0.0</text>
   <text x="65" y="186" class="small">ESP8266 · USB powered</text>
   <text x="65" y="235" class="label">3V3</text>
   <text x="65" y="275" class="label">GND</text>
@@ -68,4 +68,66 @@
   <text x="40" y="712" class="label">Separate data and clock for each module. Shared 3.3 V supply and ground.</text>
   <text x="40" y="741" class="small">Dots mark joined wires; crossings without a dot are not connections. B+/B− are unused.</text>
   <text x="40" y="768" class="small">Connect by printed label: breakout pin order and load-cell wire colors vary. Disconnect power before rewiring.</text>
+
+  <path d="M40 805 H1165" fill="none" stroke="#ccd8cf" stroke-width="2"/>
+  <text x="40" y="849" class="title">D1 mini V4.0.0 · physical pinout</text>
+  <text x="40" y="880" class="sub">Component side facing you · antenna at top · USB-C connector at bottom</text>
+
+  <rect x="450" y="910" width="300" height="420" rx="18" fill="#e3ede6" stroke="#748e7c" stroke-width="2"/>
+  <path d="M490 950 V925 H520 V950 H550 V925 H580 V950 H610 V925 H640 V950 H670 V925 H710" fill="none" stroke="#9cb29f" stroke-width="5"/>
+  <text x="600" y="1008" text-anchor="middle" class="small">ANTENNA ↑</text>
+  <rect x="525" y="1060" width="150" height="115" rx="5" fill="#ccdacf" stroke="#a3b9aa"/>
+  <text x="600" y="1105" text-anchor="middle" class="head">ESP8266</text>
+  <text x="600" y="1135" text-anchor="middle" class="small">LOLIN / Wemos</text>
+  <text x="600" y="1157" text-anchor="middle" class="small">D1 mini V4.0.0</text>
+  <rect x="550" y="1280" width="100" height="60" rx="9" fill="#c8ced0" stroke="#69777b" stroke-width="2"/>
+  <rect x="562" y="1312" width="76" height="15" rx="6" fill="#647275"/>
+  <text x="600" y="1373" text-anchor="middle" class="label">USB-C ↓</text>
+
+  <!-- Header rows are in physical order, top to bottom, in this orientation. -->
+  <g fill="#fff" stroke="#9aada1" stroke-width="2">
+    <circle cx="470" cy="980" r="8"/><circle cx="730" cy="980" r="8"/>
+    <circle cx="470" cy="1016" r="8"/><circle cx="730" cy="1016" r="8"/>
+    <circle cx="470" cy="1052" r="8"/><circle cx="730" cy="1088" r="8"/>
+    <circle cx="730" cy="1124" r="8"/><circle cx="730" cy="1160" r="8"/>
+    <circle cx="470" cy="1196" r="8"/><circle cx="730" cy="1232" r="8"/>
+  </g>
+  <circle cx="470" cy="1088" r="9" fill="#238250"/>
+  <circle cx="470" cy="1124" r="9" fill="#2466c2"/>
+  <circle cx="470" cy="1160" r="9" fill="#238250"/>
+  <circle cx="730" cy="1052" r="9" fill="#2466c2"/>
+  <circle cx="470" cy="1232" r="9" fill="#c73a41"/>
+  <circle cx="730" cy="1196" r="9" fill="#59636e"/>
+
+  <g class="label" text-anchor="end">
+    <text x="420" y="986">RST</text>
+    <text x="420" y="1022">A0 · analog input</text>
+    <text x="420" y="1058">D0 / GPIO16</text>
+    <text x="420" y="1202">D8 / GPIO15</text>
+  </g>
+  <g class="label">
+    <text x="780" y="986">TX / GPIO1</text>
+    <text x="780" y="1022">RX / GPIO3</text>
+    <text x="780" y="1094">D2 / GPIO4</text>
+    <text x="780" y="1130">D3 / GPIO0</text>
+    <text x="780" y="1166">D4 / GPIO2</text>
+    <text x="780" y="1238">5V / VBUS · unused here</text>
+  </g>
+
+  <g font-size="17" font-weight="700" font-family="Arial,Helvetica,sans-serif">
+    <text x="420" y="1094" text-anchor="end" style="fill:#238250">D5 / GPIO14 → LEFT DT</text>
+    <text x="420" y="1130" text-anchor="end" style="fill:#2466c2">D6 / GPIO12 → LEFT CLK</text>
+    <text x="420" y="1166" text-anchor="end" style="fill:#238250">D7 / GPIO13 → RIGHT DT</text>
+    <text x="780" y="1058" style="fill:#2466c2">D1 / GPIO5 → RIGHT CLK</text>
+    <text x="420" y="1238" text-anchor="end" style="fill:#c73a41">3V3 → BOTH VCC</text>
+    <text x="780" y="1202" style="fill:#59636e">GND → BOTH GND</text>
+  </g>
+  <g fill="none" stroke-width="2">
+    <path d="M430 1088 H460 M430 1160 H460" stroke="#238250"/>
+    <path d="M430 1124 H460 M740 1052 H770" stroke="#2466c2"/>
+    <path d="M430 1232 H460" stroke="#c73a41"/>
+    <path d="M740 1196 H770" stroke="#59636e"/>
+  </g>
+  <text x="40" y="1410" class="small">Colored pins are used by this scale. The small 4-pin I²C connector is not used; connect to the main headers.</text>
+  <a href="https://www.wemos.cc/en/latest/d1/d1_mini.html"><text x="40" y="1436" class="small">Pin order verified against the official Wemos D1 mini V4.0.0 pinout · wemos.cc</text></a>
 </svg>
