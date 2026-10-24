@@ -1,0 +1,8 @@
+build/
+.pio/
+.DS_Store
+*.bin
+*.elf
+*.map
+__pycache__/
+.venv/
