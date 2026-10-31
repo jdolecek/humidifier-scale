@@ -8,7 +8,13 @@ See [ESPHome wiring and setup](esphome/README.md), the [wiring diagram](docs/two
 
 [![The installed humidifier scale rails, casters, and underside wiring](docs/photos/completed-underside-wiring.jpg)](docs/build-gallery.md)
 
-[See all seven build photos with captions →](docs/build-gallery.md)
+[See all seven build photos and the dashboard screenshot with captions →](docs/build-gallery.md)
+
+## Home Assistant dashboard
+
+![Tank-water dashboard with total, left and right levels, and reservoir status](docs/photos/home-assistant-dashboard.png)
+
+Overall and per-side water estimates appear together with fill bars and reservoir status. [Dashboard details](docs/build-gallery.md#home-assistant-dashboard).
 
 The Arduino sketch and USB graph below are the original one-channel bench test. They require the Arduino firmware; ESPHome uses its own logging protocol and Home Assistant graphs.
 

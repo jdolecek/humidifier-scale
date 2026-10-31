@@ -40,6 +40,12 @@ The build uses two load-cell rails, one for each side of the humidifier. Each ra
 
 For the electrical connections, use the [labeled wiring diagram](two-channel-wiring.svg). The photos document the physical build; wire colors alone do not identify a load cell's electrical functions.
 
+## Home Assistant dashboard
+
+![Home Assistant tank-water dashboard showing overall level, separate left and right estimates, and reservoir status](photos/home-assistant-dashboard.png)
+
+*The tank-water card shows the combined estimate and fill percentage, separate left/right gallons and level bars, and reservoir status. This example shows 4.3 gallons total (86% of the 5-gallon target), with 2.13 gallons on the left and 2.17 gallons on the right. These are example readings from the screenshot, not calibration targets.*
+
 ---
 
 Photos supplied by the project owner. Documentation copies are resized for the web, stored upright, and omit the original camera/location metadata. The source photos are unchanged.
