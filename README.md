@@ -1,8 +1,8 @@
-# Humidifier scale bench
+# Humidifier tank scale
 
 Two-channel humidifier scale using a Wemos D1 mini V4.0.0 (ESP8266), two HX711s, and two matched 20 kg full-bridge load cells in parallel per tank. ESPHome exposes both tank readings to Home Assistant. The installed build is documented in the [photo gallery](docs/build-gallery.md).
 
-See [ESPHome wiring and setup](esphome/README.md), the [wiring diagram](docs/two-channel-wiring.svg), the [ESPHome configuration](esphome/humidifier-scale.yaml), and the [Home Assistant dashboard](homeassistant/dashboard.yaml). Both HX711 channels have been verified live with ESPHome 2026.9.1 and Home Assistant.
+See [ESPHome wiring and setup](esphome/README.md), the [wiring diagram](docs/two-channel-wiring.svg), the [ESPHome configuration](esphome/humidifier-scale.yaml), and the [Home Assistant dashboard](homeassistant/dashboard.yaml). Both HX711 channels were initially verified with ESPHome 2026.9.1 and Home Assistant; the installed adaptation is described below.
 
 ## Build photos
 
@@ -15,6 +15,108 @@ See [ESPHome wiring and setup](esphome/README.md), the [wiring diagram](docs/two
 ![Tank-water dashboard with total, left and right levels, and reservoir status](docs/photos/home-assistant-dashboard.png)
 
 Overall and per-side water estimates appear together with fill bars and reservoir status. [Dashboard details](docs/build-gallery.md#home-assistant-dashboard).
+
+## Adapting the scale for Home Assistant
+
+The project started as an Arduino bench sketch with a USB/browser graph. For the installed humidifier, we moved the D1 mini to **ESPHome** so Home Assistant could discover its sensors, record history, and manage firmware updates over Wi-Fi. The installed two-channel build was deployed with ESPHome 2026.10.1.
+
+```mermaid
+flowchart LR
+  L[Left pair of load cells] --> HL[Left HX711]
+  R[Right pair of load cells] --> HR[Right HX711]
+  HL --> D[Wemos D1 mini / ESPHome]
+  HR --> D
+  D -->|Encrypted native API| HA[Home Assistant]
+  F[Existing humidifier float switch] --> HA
+  HA --> V[Tank levels, history, and reservoir status]
+```
+
+The scale uses the [ESPHome integration](https://www.home-assistant.io/integrations/esphome/) and native API; it does not need an MQTT broker or the laptop graph server. The existing humidifier controller provides the enable relay and float-switch entities separately. The scale firmware measures weight; it does not replace that controller.
+
+### Connect and install
+
+| Channel | HX711 DOUT | HX711 clock |
+| --- | --- | --- |
+| Left | D5 / GPIO14 | D6 / GPIO12 |
+| Right | D7 / GPIO13 | D1 / GPIO5 |
+
+Both HX711s share the D1 mini's 3.3 V supply and ground. Each pair of parallel cells produces one combined reading. See the [physical pinout and wiring diagram](docs/two-channel-wiring.svg) and [detailed ESPHome setup](esphome/README.md).
+
+1. Create an ESP8266 device in ESPHome Device Builder using board `d1_mini`. Use [esphome/humidifier-scale.yaml](esphome/humidifier-scale.yaml) as the hardware starting point, retaining generated Wi-Fi, API encryption, and OTA settings if merging it into an existing device.
+2. Copy [secrets.example.yaml](esphome/secrets.example.yaml) to `esphome/secrets.yaml` and replace the placeholders with your own Wi-Fi credentials and API encryption key. Keep credentials out of committed YAML.
+3. Install over USB for the initial migration from Arduino. This replaces the Arduino firmware, including its access point and USB graph protocol. Subsequent updates can be installed over the network through Device Builder.
+4. In Home Assistant, accept the discovered ESPHome device under **Settings → Devices & services**, or add the ESPHome integration manually using the device's hostname/IP and encryption key.
+5. Check both raw channels while loading each side independently. Then add filtering and calibrate the installed assembly before treating any value as gallons or percentage.
+
+**Scope of the examples:** the checked-in ESPHome configuration and [dashboard YAML](homeassistant/dashboard.yaml) are generic raw-reading starting points. The screenshot shows the later calibrated installation described below. Its installation-specific coefficients, private logs, credentials, and complete household dashboard configuration are not distributed with those examples.
+
+### What we added to the readings
+
+Raw ADC counts stay available for troubleshooting. Separate filtered copies feed the water calculations, so filtering does not hide problems in the original signal graphs. Each channel samples once per second and uses a **seven-sample moving median**, publishing every sample, followed by a five-second stale-data timeout.
+
+For example, append this entry under the existing `sensor:` list for the left channel, and repeat it with right-side names and IDs:
+
+```yaml
+- platform: copy
+  source_id: left_tank_raw
+  name: Left Tank Filtered
+  id: left_tank_filtered
+  filters:
+    - filter_out: nan
+    - median:
+        window_size: 7
+        send_every: 1
+        send_first_at: 1
+    - timeout: 5s
+```
+
+Once the window is full, the median rejects up to three isolated outliers within seven samples. A sustained refill or tank removal still passes, with roughly three seconds of delay. Longer disturbances can pass too. See [ESPHome sensor filters](https://esphome.io/components/sensor/#median). Derived water readings update every two seconds and propagate unavailable inputs instead of treating them as zero.
+
+### Calibrating the tanks and reservoir
+
+We first moved the same loaded tank between sides, then checked both tanks together. This exposed a small response on the opposite channel. Later, a complete drain cycle provided a better installed-empty reference and a way to estimate that cross-response during periods when only one tank was draining.
+
+The tank valves are designed to empty one tank before the other. The recorded cycle showed the right tank draining first, followed by the left. Unequal levels are therefore expected; equalizing the readings in software would conceal useful information.
+
+The calibration follows these rules:
+
+- **Tank zero:** both empty tank shells installed in their normal positions, with the reservoir still full. An earlier tanks-removed baseline was replaced so the tank shells are included in the tare.
+- **Full:** retain the original full reference and the project's **5 US gallon combined operational target**. A later, slightly underfilled refill did not redefine Full. Side percentages use a nominal 2.5 gallons each; the original full test was not forced into an equal split.
+- **Separate levels:** compensate for the small measured cross-response, convert each side to an approximate water estimate, and sum the two for the overall level. A 0.03-gallon per-side deadband suppresses residual readings near empty. Display percentages are bounded to 0–100%.
+- **Reservoir:** exclude its water from tank gallons. The transition from one channel draining to both channels falling together helps identify the reservoir-only portion of the cycle; compare this with the float history rather than using the float edge alone as tank zero.
+
+These are practical level estimates, not independently verified precision volume measurements. When adapting the design, determine your own installed-empty and known-load references, check cross-response, and validate a complete drain/refill cycle. Preserve an established Full reference when refining the empty endpoint.
+
+### Home Assistant entities and dashboard
+
+The deployed device publishes these sensor groups. Home Assistant entity IDs depend on the device name; with `humidifier-scale`, they use the `sensor.humidifier_scale_` prefix.
+
+| Sensor names | Purpose |
+| --- | --- |
+| Left/Right Tank Raw | Original signed ADC counts and diagnostic graphs |
+| Left/Right Tank Filtered | Outlier-filtered counts used for calibration |
+| Left/Right Tank Water Estimate | Per-side water estimates in US gallons |
+| Left/Right Tank Fill Estimate | Per-side percentages using nominal 2.5-gallon capacity |
+| Tank Water Estimate | Left plus right, in US gallons |
+| Tank Fill Estimate | Overall percentage of the 5-gallon target |
+| Tank Fill State | Empty at or below 0.25 gal; Full at or above 4.75 gal; otherwise In between |
+
+The compact card in the screenshot uses **`custom:button-card`**, installed through HACS, to display overall gallons and percentage above separate left/right values and fill bars. Reservoir status is calculated in the dashboard using the existing float-switch entity; it is not an extra sensor wired to the scale's D1 mini.
+
+| Dashboard reservoir message | Meaning |
+| --- | --- |
+| Reservoir water available | Float indicates usable water and the tanks still contain water |
+| Reservoir only · tanks empty | Both tank estimates are zero, while the float still indicates usable water |
+| Reservoir low | Float has reached its low-water threshold |
+| Reservoir status unavailable | The float reading is unavailable; it is not assumed to mean low water |
+
+A low float does **not** establish a bone-dry reservoir. We have not calibrated an exact reservoir volume in gallons or a true Dry endpoint.
+
+We added the summary and left/right/overall history graphs to the dedicated scale dashboard and to the **humidifier side of the Plant view**, keeping plant moisture and lighting on the other side. The Plant view also retains humidity history, the enable relay, float state, and activity history. Existing total and raw histories remain intact; the newly introduced per-side derived entities start collecting their own history when deployed.
+
+Before updating firmware or dashboard cards, we backed up their configurations so the changes could be undone. For diagnostics, remember that opposite raw signs can come from different bridge offsets, and separate raw graphs choose different vertical scales. Compare changes under load and numeric axis ranges before concluding that wiring is reversed or one side is noisier.
+
+## Original Arduino bench test
 
 The Arduino sketch and USB graph below are the original one-channel bench test. They require the Arduino firmware; ESPHome uses its own logging protocol and Home Assistant graphs.
 
