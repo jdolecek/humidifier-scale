@@ -8,7 +8,7 @@ See [ESPHome wiring and setup](esphome/README.md), the [wiring diagram](docs/two
 
 [![The installed humidifier scale rails, casters, and underside wiring](docs/photos/completed-underside-wiring.jpg)](docs/build-gallery.md)
 
-[See all eight build and hardware photos with captions →](docs/build-gallery.md)
+[See all seven build photos with captions →](docs/build-gallery.md)
 
 The Arduino sketch and USB graph below are the original one-channel bench test. They require the Arduino firmware; ESPHome uses its own logging protocol and Home Assistant graphs.
 

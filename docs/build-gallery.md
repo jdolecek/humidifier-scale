@@ -40,12 +40,6 @@ The build uses two load-cell rails, one for each side of the humidifier. Each ra
 
 For the electrical connections, use the [labeled wiring diagram](two-channel-wiring.svg). The photos document the physical build; wire colors alone do not identify a load cell's electrical functions.
 
-## Separate temperature-probe photo
-
-![Metal temperature probe with braided cable and two fork terminals](photos/separate-temperature-probe.jpg)
-
-*An additional hardware photo supplied with this set: a metal temperature probe with braided cable and fork terminals. It is shown separately because it is not part of the HX711 tank-scale wiring.*
-
 ---
 
 Photos supplied by the project owner. Documentation copies are resized for the web, stored upright, and omit the original camera/location metadata. The source photos are unchanged.
